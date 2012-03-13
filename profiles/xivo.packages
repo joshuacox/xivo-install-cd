@@ -1,0 +1,8 @@
+postfix
+dhcp3-server
+debconf-utils
+hwinfo
+openssh-server
+console-data
+locales-all
+libbind9-60
