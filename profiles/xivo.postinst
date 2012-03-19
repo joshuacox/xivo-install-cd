@@ -7,7 +7,7 @@ echo -e "\n" |apt-cdrom add
 
 
 # add xivo keys
-apt-key add /media/cdrom/simple-cdd/ziyi_proformatique_current.asc
+apt-key add /media/cdrom/simple-cdd/xivo_current.key
 
 # install xivo packages
 echo -e "\033[91m* Installing xivo packages\033[0m"
