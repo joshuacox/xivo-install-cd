@@ -1,6 +1,7 @@
 #!/bin/bash
+set -x
 
-build_dir="$pwd"
+build_dir=$(pwd)
 image_dir="$build_dir/images"
 packages_dir="/tmp/xivo_packages"
 mirror="http://ftp.ca.debian.org/debian"
@@ -25,6 +26,7 @@ deploy_iso () {
 
 release="squeeze-xivo-skaro-1.2"
 version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -Eo '1\.[2-9]\.[0-9]{1,2}')"
+
 cleanup
 build_iso
-deploy_iso
+#deploy_iso
