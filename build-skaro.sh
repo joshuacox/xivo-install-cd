@@ -14,7 +14,7 @@ cleanup () {
 build_iso () {
     cd $build_dir
     ./get-xivo-packages.py -s skaro $packages_dir
-    su builder -c "simple-cdd --dist squeeze -g --profiles-udeb-dist squeeze --conf ./xivo.conf --debian-mirror $mirror"
+    simple-cdd --dist squeeze -g --profiles-udeb-dist squeeze --conf ./xivo.conf --debian-mirror $mirror
 }
 
 rename_iso () {
