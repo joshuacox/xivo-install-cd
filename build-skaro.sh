@@ -17,11 +17,10 @@ build_iso () {
     su builder -c "simple-cdd --dist squeeze -g --profiles-udeb-dist squeeze --conf ./xivo.conf --debian-mirror $mirror"
 }
 
-deploy_iso () {
+rename_iso () {
     cd $image_dir
     mv debian-6.0.4-i386-CD-1.iso $version.iso
     md5sum $version.iso > $version.iso.md5sum
-    rsync -av $image_dir/ mirror.xivo.fr:/data/iso/$version/
 }
 
 release="squeeze-xivo-skaro-1.2"
@@ -29,4 +28,4 @@ version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -
 
 cleanup
 build_iso
-#deploy_iso
+rename_iso
