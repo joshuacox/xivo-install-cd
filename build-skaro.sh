@@ -19,7 +19,7 @@ build_iso () {
 
 rename_iso () {
     cd $image_dir
-    mv debian-6.0.4-i386-CD-1.iso $version.iso
+    mv debian-*.iso $version.iso
     md5sum $version.iso > $version.iso.md5sum
 }
 
