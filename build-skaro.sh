@@ -23,8 +23,8 @@ rename_iso () {
     md5sum $version.iso > $version.iso.md5sum
 }
 
-release="squeeze-xivo-skaro-1.2"
-version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -Eo '1\.[2-9]\.[0-9]{1,2}')"
+release="squeeze-xivo-skaro-12"
+version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
 
 cleanup
 build_iso
