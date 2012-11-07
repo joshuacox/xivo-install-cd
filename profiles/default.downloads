@@ -1,5 +1,5 @@
 # keep grub or debian-installer may not work properly.
-grub2
+grub-pc
 
 popularity-contest
 localization-config
