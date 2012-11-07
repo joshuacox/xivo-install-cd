@@ -5,6 +5,12 @@ cp /etc/apt/sources.list /etc/apt/sources.list.bkp
 echo '' > /etc/apt/sources.list
 echo -e "\n" |apt-cdrom add
 
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="console=tty0 console=ttyS0,115200n8"/' /etc/default/grub
+sed -i '/GRUB_CMDLINE_LINUX=/a GRUB_TERMINAL=serial' /etc/default/grub
+sed -i '/GRUB_TERMINAL/a GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"' /etc/default/grub
+update-grub2
+
+sed -i 's%#T0:23.*%T0:23:respawn:/sbin/getty -L ttyS0 9600 vt100%' /etc/inittab
 
 # add xivo keys
 apt-key add /media/cdrom/simple-cdd/xivo_current.key
