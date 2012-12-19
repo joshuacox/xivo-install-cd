@@ -2,7 +2,6 @@
 
 # set cdrom as apt source
 cp /etc/apt/sources.list /etc/apt/sources.list.bkp
-echo '' > /etc/apt/sources.list
 echo -e "\n" |apt-cdrom add
 
 
