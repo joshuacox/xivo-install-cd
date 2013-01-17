@@ -104,7 +104,7 @@ if __name__ == '__main__':
         'xivo-dev-ssh-pubkeys',
     ]
     skip=False
-    
+
     for src in SUITES[options.suite]:
         f = urllib2.urlopen(DAKBASE + src)
         for line in f.readlines():
@@ -116,7 +116,7 @@ if __name__ == '__main__':
                         (pacnam.endswith('-dev') or \
                         len(filter(lambda x: pacnam.startswith(x), exclude)) > 0):
                     continue
-                
+
                 skip = False
 
             if skip:
