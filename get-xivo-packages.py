@@ -35,21 +35,11 @@ def main():
 
 class GetXivoPackages():
     def __init__(self):
-        self.SUITES    = {
-            'skaro': [
-                'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
-                'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
-                'squeeze-xivo-skaro/main/binary-i386/Packages',
-                'squeeze-xivo-skaro/non-free/binary-i386/Packages',
-                'squeeze/main/binary-i386/Packages',
-                'squeeze/contrib/binary-i386/Packages',
-                'squeeze/non-free/binary-i386/Packages',
-            ],
-        }
         self._parse_arguments()
-        self.DAKBASE = 'http://mirror.xivo.fr/%s/dists/' % self.debian_or_archive
+        self._define_version()
         self._whitelist()
-        self.stats         = {'size': 0, 'installed-size': 0}
+        self.stats = {'size': 0, 'installed-size': 0}
+        self.DAKBASE = 'http://mirror.xivo.fr/%s/dists/' % self.debian_or_archive
         self.packages = []
 
     def list_and_download_packages(self):
@@ -68,15 +58,28 @@ class GetXivoPackages():
             default=False, help="force re-download all packages")
         self.parser.add_option('-V', '--version'                 , dest='version'         , action='store',
             type='string', default='current', help="specify the XiVO version to build. Default is 'curent'")
-        self.parser.add_option('-s', '--suite'     , dest='suite'    , action='store',
-            type='string', default='skaro', help="XiVO suite. set SUITE to 'list' to list all available suites")
 
         (self.options, self.args) = self.parser.parse_args()
         self._validate_args()
 
     def _validate_args(self):
+        if not self.options.list and len(self.args) != 1:
+            self.parser.print_help(); sys.exit(2)
+
+    def _define_version(self):
         if self.options.version in ['current']:
             self.debian_or_archive = '/debian/'
+            self.SUITES    = {
+                'skaro': [
+                    'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
+                    'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
+                    'squeeze-xivo-skaro/main/binary-i386/Packages',
+                    'squeeze-xivo-skaro/non-free/binary-i386/Packages',
+                    'squeeze/main/binary-i386/Packages',
+                    'squeeze/contrib/binary-i386/Packages',
+                    'squeeze/non-free/binary-i386/Packages',
+                ],
+            }
         else:
             self.debian_or_archive = '/archive/'
             self.SUITES    = {
@@ -86,39 +89,16 @@ class GetXivoPackages():
                 ],
             }
 
-        if self.options.suite in ['list']:
-            print "Available suites:"
-            for suite in self.SUITES.keys():
-                print " *", suite
-            sys.exit(0)
-
-        if not self.options.list and len(self.args) != 1:
-            self.parser.print_help(); sys.exit(2)
-
-        if self.options.suite not in self.SUITES:
-            print "Unknown suite", self.options.suite; sys.exit(2)
-
     def _whitelist(self):
-        if self.options.suite == "skaro-dev":
-            self.include = [
-                'pf-fai-xivo-1.2-skaro-dev',
-                'pf-fai-dev',
-            ]
-        elif self.options.suite == "skaro-rc":
+        if self.options.version in ['current']:
             self.include = [
                 'pf-fai-xivo-1.2-skaro',
                 'pf-fai',
             ]
-        elif self.options.suite == "skaro":
-            if self.options.version in ['current']:
-                self.include = [
-                    'pf-fai-xivo-1.2-skaro',
-                    'pf-fai',
-                ]
-            else:
-                self.include = [
-                    'xivo-fai-skaro-%s' % (self.options.version),
-                ]
+        else:
+            self.include = [
+                'xivo-fai-skaro-%s' % (self.options.version),
+            ]
         self.exclude = [
             'cracklib',
             'dahdi-linux-source',
@@ -144,7 +124,7 @@ class GetXivoPackages():
         self.skip=False
 
     def _list_packages(self):
-        for src in self.SUITES[self.options.suite]:
+        for src in self.SUITES['skaro']:
             f = urllib2.urlopen(self.DAKBASE + src)
             for line in f.readlines():
                 if line.startswith('Package:'):
