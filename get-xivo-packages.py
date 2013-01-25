@@ -79,6 +79,12 @@ class GetXivoPackages():
             self.debian_or_archive = '/debian/'
         else:
             self.debian_or_archive = '/archive/'
+            self.SUITES    = {
+                'skaro': [
+                    'squeeze-xivo-skaro-%s/main/binary-i386/Packages' % (self.options.version),
+                    'squeeze-xivo-skaro-%s/non-free/binary-i386/Packages' % (self.options.version),
+                ],
+            }
 
         if self.options.suite in ['list']:
             print "Available suites:"
@@ -104,10 +110,15 @@ class GetXivoPackages():
                 'pf-fai',
             ]
         elif self.options.suite == "skaro":
-            self.include = [
-                'pf-fai-xivo-1.2-skaro',
-                'pf-fai',
-            ]
+            if self.options.version in ['current']:
+                self.include = [
+                    'pf-fai-xivo-1.2-skaro',
+                    'pf-fai',
+                ]
+            else:
+                self.include = [
+                    'xivo-fai-skaro-%s' % (self.options.version),
+                ]
         self.exclude = [
             'cracklib',
             'dahdi-linux-source',
