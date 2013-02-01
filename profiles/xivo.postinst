@@ -44,4 +44,5 @@ if [ -e "${CONFIG}" ]; then
     chown asterisk:www-data ${CONFIG}
     chmod 660 ${CONFIG}
 fi
-invoke-rc.d dahdi restart
+
+xivo-service restart all
