@@ -44,5 +44,3 @@ if [ -e "${CONFIG}" ]; then
     chown asterisk:www-data ${CONFIG}
     chmod 660 ${CONFIG}
 fi
-
-xivo-service restart all
