@@ -17,9 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from __future__ import with_statement
-__version__ = "$Revision$ $Date$"
-__author__    = "Guillaume Bour <gbour@proformatique.com>"
-__author__    = "Steven Le Bras <slebras@avencall.com>"
 
 import sys
 import urllib2
@@ -27,6 +24,7 @@ import httplib
 import os
 import os.path
 from optparse import OptionParser
+
 
 def main():
     gxp = GetXivoPackages()
@@ -50,26 +48,40 @@ class GetXivoPackages():
         self._download_packages()
 
     def _parse_arguments(self):
-        usage    = "Usage: %prog [options] path/to/download"
+        usage = "Usage: %prog [options] path/to/download"
         self.parser = OptionParser(usage=usage)
-        self.parser.add_option('-l', '--list-packages'                 , dest='list'         , action='store_true',
-            default=False, help="list available packages (do not download)")
-        self.parser.add_option('-f', '--force'                 , dest='force'         , action='store_true',
-            default=False, help="force re-download all packages")
-        self.parser.add_option('-V', '--version'                 , dest='version'         , action='store',
-            type='string', default='current', help="specify the XiVO version to build. Default is 'curent'")
+        self.parser.add_option('-l',
+                               '--list-packages',
+                               dest='list',
+                               action='store_true',
+                               default=False,
+                               help="list available packages (do not download)")
+        self.parser.add_option('-f',
+                               '--force',
+                               dest='force',
+                               action='store_true',
+                               default=False,
+                               help="force re-download all packages")
+        self.parser.add_option('-V',
+                               '--version',
+                               dest='version',
+                               action='store',
+                               type='string',
+                               default='current',
+                               help="specify the XiVO version to build. Default is 'curent'")
 
         (self.options, self.args) = self.parser.parse_args()
         self._validate_args()
 
     def _validate_args(self):
         if not self.options.list and len(self.args) != 1:
-            self.parser.print_help(); sys.exit(2)
+            self.parser.print_help()
+            sys.exit(2)
 
     def _define_version(self):
         if self.options.version in ['current']:
             self.debian_or_archive = '/debian/'
-            self.SUITES    = {
+            self.SUITES = {
                 'skaro': [
                     'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
                     'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
@@ -82,7 +94,7 @@ class GetXivoPackages():
             }
         else:
             self.debian_or_archive = '/archive/'
-            self.SUITES    = {
+            self.SUITES = {
                 'skaro': [
                     'squeeze-xivo-skaro-%s/main/binary-i386/Packages' % (self.options.version),
                     'squeeze-xivo-skaro-%s/non-free/binary-i386/Packages' % (self.options.version),
@@ -121,7 +133,7 @@ class GetXivoPackages():
             'wireshark',
             'xivo-dev-ssh-pubkeys',
         ]
-        self.skip=False
+        self.skip = False
 
     def _list_packages(self):
         for src in self.SUITES['skaro']:
@@ -132,10 +144,10 @@ class GetXivoPackages():
                     pacnam = line.split(' ')[1][:-1]
 
                     if not pacnam in self.include and \
-                            (pacnam.endswith('-dev') or \
-                            len(filter(lambda x: pacnam.startswith(x), self.exclude)) > 0):
+                            (pacnam.endswith('-dev') or
+                             len(filter(lambda x: pacnam.startswith(x), self.exclude)) > 0):
                         continue
-                    
+
                     self.skip = False
 
                 if self.skip:
@@ -148,20 +160,21 @@ class GetXivoPackages():
                 elif line.startswith('Filename:'):
                     if 'dalek' in line:
                         continue
-                
+
                     self.packages.append(line.split(' ')[1][:-1])
 
             f.close()
-            
+
     def _print_list(self):
-        import pprint; pprint.pprint(self.packages)
+        import pprint
+        pprint.pprint(self.packages)
         print self.stats
         sys.exit(0)
 
     def _download_packages(self):
         if not os.path.exists(self.args[0]):
             os.makedirs(self.args[0])
-        
+
         conn = httplib.HTTPConnection('mirror.xivo.fr')
         for package in self.packages:
             debfile = package.rsplit('/', 1)[-1]
@@ -169,31 +182,32 @@ class GetXivoPackages():
 
             if os.path.exists(self.args[0] + '/' + debfile):
                 localsize = os.path.getsize(self.args[0] + '/' + debfile)
-                
+
                 conn.request("HEAD", self.debian_or_archive + package)
                 resp = conn.getresponse()
                 try:
-                    netsize     = int(dict(resp.getheaders()).get('content-length'))
+                    netsize = int(dict(resp.getheaders()).get('content-length'))
                 except:
-                    netsize     = -1
+                    netsize = -1
                 conn.close()
-                
+
                 if netsize == localsize:
-                    print 'skipping...'; continue
-            
+                    print 'skipping...'
+                    continue
+
             print '...'
             conn.request("GET", self.debian_or_archive + package)
             print self.debian_or_archive + package
             resp = conn.getresponse()
-            
+
             with open(self.args[0] + '/' + debfile, 'wb') as f:
                 while True:
                     data = resp.read(8192)
                     if len(data) == 0:
                         break
-                        
+
                     f.write(data)
-                
+
             conn.close()
 
 if __name__ == '__main__':
