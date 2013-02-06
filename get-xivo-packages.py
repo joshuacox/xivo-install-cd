@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # Copyright (C) 2010-2013 Avencall
 #
@@ -19,11 +19,13 @@
 from __future__ import with_statement
 
 import sys
+import hashlib
 import urllib2
-import httplib
+import subprocess
 import os
-import os.path
 from optparse import OptionParser
+
+HTTP_MIRROR = 'http://mirror.xivo.fr'
 
 
 def main():
@@ -31,18 +33,18 @@ def main():
     gxp.list_and_download_packages()
 
 
-class GetXivoPackages():
+class GetXivoPackages(object):
+
     def __init__(self):
         self._parse_arguments()
         self._define_version()
         self._whitelist()
         self.stats = {'size': 0, 'installed-size': 0}
-        self.DAKBASE = 'http://mirror.xivo.fr/%s/dists/' % self.debian_or_archive
-        self.packages = []
+        self.packages = {}
+        self.mirror = '%s/%s' % (HTTP_MIRROR, self.release)
 
     def list_and_download_packages(self):
         self._list_packages()
-        self.packages.sort()
         if self.options.list:
             self._print_list()
         self._download_packages()
@@ -68,7 +70,7 @@ class GetXivoPackages():
                                action='store',
                                type='string',
                                default='current',
-                               help="specify the XiVO version to build. Default is 'curent'")
+                               help="specify the XiVO version to build. Default is 'current'")
 
         (self.options, self.args) = self.parser.parse_args()
         self._validate_args()
@@ -80,32 +82,26 @@ class GetXivoPackages():
 
     def _define_version(self):
         if self.options.version in ['current']:
-            self.debian_or_archive = '/debian/'
-            self.SUITES = {
-                'skaro': [
-                    'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
-                    'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
-                    'squeeze-xivo-skaro/main/binary-i386/Packages',
-                    'squeeze-xivo-skaro/non-free/binary-i386/Packages',
-                    'squeeze/main/binary-i386/Packages',
-                    'squeeze/contrib/binary-i386/Packages',
-                    'squeeze/non-free/binary-i386/Packages',
-                ],
-            }
+            self.release = 'debian'
+            self.SUITES = [
+                'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
+                'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
+                'squeeze/main/binary-i386/Packages',
+                'squeeze/contrib/binary-i386/Packages',
+                'squeeze/non-free/binary-i386/Packages'
+            ]
         else:
-            self.debian_or_archive = '/archive/'
-            self.SUITES = {
-                'skaro': [
-                    'squeeze-xivo-skaro-%s/main/binary-i386/Packages' % (self.options.version),
-                    'squeeze-xivo-skaro-%s/non-free/binary-i386/Packages' % (self.options.version),
-                ],
-            }
+            self.release = 'archive'
+            self.SUITES = [
+                'squeeze-xivo-skaro-%s/main/binary-i386/Packages' % (self.options.version),
+                'squeeze-xivo-skaro-%s/non-free/binary-i386/Packages' % (self.options.version)
+            ]
 
     def _whitelist(self):
         if self.options.version in ['current']:
             self.include = [
                 'pf-fai-xivo-1.2-skaro',
-                'pf-fai',
+                'pf-fai'
             ]
         else:
             self.include = [
@@ -131,21 +127,23 @@ class GetXivoPackages():
             'swig',
             'tshark',
             'wireshark',
-            'xivo-dev-ssh-pubkeys',
+            'xivo-dev-ssh-pubkeys'
         ]
         self.skip = False
 
     def _list_packages(self):
-        for src in self.SUITES['skaro']:
-            f = urllib2.urlopen(self.DAKBASE + src)
+        for src in self.SUITES:
+            mirror_host = '%s/dists/%s' % (self.mirror, src)
+            f = urllib2.urlopen(mirror_host)
+            package_process = ''
             for line in f.readlines():
                 if line.startswith('Package:'):
                     self.skip = True
-                    pacnam = line.split(' ')[1][:-1]
+                    package = line.split(' ')[1][:-1].strip()
 
-                    if not pacnam in self.include and \
-                            (pacnam.endswith('-dev') or
-                             len(filter(lambda x: pacnam.startswith(x), self.exclude)) > 0):
+                    if not package in self.include and \
+                            (package.endswith('-dev') or
+                             len(filter(lambda x: package.startswith(x), self.exclude)) > 0):
                         continue
 
                     self.skip = False
@@ -153,21 +151,25 @@ class GetXivoPackages():
                 if self.skip:
                     continue
 
-                if line.startswith('Installed-Size:'):
-                    self.stats['installed-size'] += int(line.split(' ')[1])
-                elif line.startswith('Size:'):
-                    self.stats['size'] += int(line.split(' ')[1])
-                elif line.startswith('Filename:'):
-                    if 'dalek' in line:
-                        continue
+                if package_process != package:
+                    package_process = package
+                    self.packages[package_process] = {}
 
-                    self.packages.append(line.split(' ')[1][:-1])
+                if line.startswith('Installed-Size:'):
+                    self.stats['installed-size'] += int(line.split(' ')[1].strip())
+                elif line.startswith('Size:'):
+                    self.stats['size'] += int(line.split(' ')[1].strip())
+                    self.packages[package_process]['Size'] = int(line.split(' ')[1].strip())
+                elif line.startswith('Filename:'):
+                    self.packages[package_process]['Filename'] = line.split(' ')[1].strip()
+                elif line.startswith('MD5sum:'):
+                    self.packages[package_process]['MD5sum'] = line.split(' ')[1].strip()
 
             f.close()
 
     def _print_list(self):
-        import pprint
-        pprint.pprint(self.packages)
+        for package, pkg_opts in self.packages.iteritems():
+            print '%s: %s' % (package, pkg_opts['Filename'])
         print self.stats
         sys.exit(0)
 
@@ -175,40 +177,33 @@ class GetXivoPackages():
         if not os.path.exists(self.args[0]):
             os.makedirs(self.args[0])
 
-        conn = httplib.HTTPConnection('mirror.xivo.fr')
-        for package in self.packages:
-            debfile = package.rsplit('/', 1)[-1]
-            print " . downloading", debfile, ':',
+        for package, pkg_opts in self.packages.iteritems():
+            target = '%s/%s' % (self.mirror, pkg_opts['Filename'])
+            debfilename = os.path.basename(target)
+            local_debfile_path = os.path.join(self.args[0], debfilename)
 
-            if os.path.exists(self.args[0] + '/' + debfile):
-                localsize = os.path.getsize(self.args[0] + '/' + debfile)
-
-                conn.request("HEAD", self.debian_or_archive + package)
-                resp = conn.getresponse()
-                try:
-                    netsize = int(dict(resp.getheaders()).get('content-length'))
-                except:
-                    netsize = -1
-                conn.close()
-
-                if netsize == localsize:
-                    print 'skipping...'
+            print 'Processing.. %s' % target
+            if os.path.exists(local_debfile_path):
+                md5sum = md5_checksum(local_debfile_path)
+                if md5sum == pkg_opts['MD5sum']:
+                    print ' . skipping... (MD5sum match)'
                     continue
 
-            print '...'
-            conn.request("GET", self.debian_or_archive + package)
-            print self.debian_or_archive + package
-            resp = conn.getresponse()
+            print " . downloading..."
+            proc = subprocess.Popen(['wget', '-P', self.args[0], target])
+            proc.communicate()
 
-            with open(self.args[0] + '/' + debfile, 'wb') as f:
-                while True:
-                    data = resp.read(8192)
-                    if len(data) == 0:
-                        break
 
-                    f.write(data)
+def md5_checksum(fil_path):
+    fh = open(fil_path, 'rb')
+    m = hashlib.md5()
+    while True:
+        data = fh.read(8192)
+        if not data:
+            break
+        m.update(data)
+    return m.hexdigest()
 
-            conn.close()
 
 if __name__ == '__main__':
     main()
