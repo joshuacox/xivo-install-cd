@@ -34,8 +34,8 @@ mount /media/cdrom
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
-# initialize xivo and asterisk databases
-sed -i '13 i\/usr/sbin/xivo-update-db && sed -i "s:^/usr/sbin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
+# initialize databases
+/usr/bin/xivo-update-db
 
 # dahdi configuration
 invoke-rc.d dahdi restart
