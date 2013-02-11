@@ -35,7 +35,7 @@ cp /media/cdrom/simple-cdd/issue.xivo /etc/issue
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
 # initialize databases
-/usr/bin/xivo-update-db
+sed -i '13 i\/usr/bin/xivo-update-db && sed -i "s:^/usr/bin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
 
 # dahdi configuration
 invoke-rc.d dahdi restart
