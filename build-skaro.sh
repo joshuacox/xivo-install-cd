@@ -13,7 +13,7 @@ cleanup () {
 
 build_iso () {
     cd $build_dir
-    ./get-xivo-packages.py -s skaro $packages_dir
+    ./get-xivo-packages.py $packages_dir
     simple-cdd --dist squeeze -g --profiles-udeb-dist squeeze --conf ./xivo.conf --debian-mirror $mirror
 }
 

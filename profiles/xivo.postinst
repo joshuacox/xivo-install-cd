@@ -11,6 +11,7 @@ apt-key add /media/cdrom/simple-cdd/xivo_current.key
 # install xivo packages
 echo -e "\033[91m* Installing xivo packages\033[0m"
 export KERN_REL=$(ls /lib/modules/ | sort | head -n 1)
+echo startup=no > /etc/default/xivo
 
 apt-get update
 apt-get install -y dahdi-linux-modules-${KERN_REL}
@@ -33,8 +34,8 @@ mount /media/cdrom
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
-# initialize xivo and asterisk databases
-sed -i '13 i\/usr/sbin/xivo-update-db && sed -i "s:^/usr/sbin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
+# initialize databases
+sed -i '13 i\/usr/bin/xivo-update-db && sed -i "s:^/usr/bin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
 
 # dahdi configuration
 invoke-rc.d dahdi restart
@@ -44,4 +45,3 @@ if [ -e "${CONFIG}" ]; then
     chown asterisk:www-data ${CONFIG}
     chmod 660 ${CONFIG}
 fi
-invoke-rc.d dahdi restart
