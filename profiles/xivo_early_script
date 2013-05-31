@@ -3,4 +3,3 @@
 touch /XIVO-INSTALL;
 
 echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf;
-echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf;

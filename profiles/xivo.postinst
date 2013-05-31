@@ -9,6 +9,7 @@ echo -e "\n" |apt-cdrom add
 apt-key add /media/cdrom/simple-cdd/xivo_current.key
 
 # install xivo packages
+echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/91tmp;
 echo -e "\033[91m* Installing xivo packages\033[0m"
 export KERN_REL=$(ls /lib/modules/ | sort | head -n 1)
 echo startup=no > /etc/default/xivo
@@ -36,6 +37,8 @@ cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
 # initialize databases
 sed -i '13 i\/usr/bin/xivo-update-db && sed -i "s:^/usr/bin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
+
+rm /etc/apt/apt.conf.d/91tmp
 
 # dahdi configuration
 invoke-rc.d dahdi restart
