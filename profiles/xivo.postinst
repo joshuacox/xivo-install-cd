@@ -16,7 +16,7 @@ echo startup=no > /etc/default/xivo
 
 apt-get update
 apt-get install -y dahdi-linux-modules-${KERN_REL}
-apt-get install -y x11-common postgresql-9.0
+apt-get install -y x11-common
 apt-get install -y -o Dpkg::Options::="--force-confold" xivo-fai-skaro pf-xivo
 
 # restore apt configuration
