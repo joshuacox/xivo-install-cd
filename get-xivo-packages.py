@@ -119,6 +119,7 @@ class GetXivoPackages(object):
             'mpb',
             'pf-sys-ssh',
             'pfbotnet', 'libpfbotnet',
+            'postgresql-8.4',
             'python-cap',
             'python-crack',
             'sangoma-dbg',
