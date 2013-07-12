@@ -4,7 +4,7 @@ set -x
 build_dir=$(pwd)
 image_dir="$build_dir/images"
 packages_dir="/tmp/xivo_packages"
-mirror="http://ftp.ca.debian.org/debian"
+mirror="http://http.debian.net/debian"
 
 cleanup () {
     rm -rf $build_dir/tmp/{cd-build,debian-cd,debootstrap,extra}
@@ -23,7 +23,6 @@ rename_iso () {
     md5sum $version.iso > $version.iso.md5sum
 }
 
-release="squeeze-xivo-skaro-12"
 version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
 
 cleanup
