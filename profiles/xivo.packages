@@ -4,5 +4,7 @@ debconf-utils
 hwinfo
 openssh-server
 console-data
+console-tools
+console-setup
 locales-all
 libbind9-60
