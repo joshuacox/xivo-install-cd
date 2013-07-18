@@ -4,7 +4,7 @@ set -x
 build_dir=$(pwd)
 image_dir="$build_dir/images"
 packages_dir="/tmp/xivo_packages"
-mirror="http://http.debian.net/debian"
+mirror="http://ftp.ca.debian.org/debian"
 
 cleanup () {
     rm -rf $build_dir/tmp/{cd-build,debian-cd,debootstrap,extra}
