@@ -14,7 +14,7 @@ cleanup () {
 build_iso () {
     cd $build_dir
     ./get-xivo-packages.py $packages_dir
-    simple-cdd --dist squeeze -g --profiles-udeb-dist squeeze --conf ./xivo.conf --debian-mirror $mirror
+    simple-cdd --dist wheezy -g --profiles-udeb-dist wheezy --conf ./xivo.conf --debian-mirror $mirror
 }
 
 rename_iso () {
@@ -23,7 +23,7 @@ rename_iso () {
     md5sum $version.iso > $version.iso.md5sum
 }
 
-version="squeeze-xivo-skaro-$(apt-cache policy pf-xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
+version="xivo-$(apt-cache policy pf-xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
 
 cleanup
 build_iso
