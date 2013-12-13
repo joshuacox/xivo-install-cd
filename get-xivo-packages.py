@@ -84,17 +84,17 @@ class GetXivoPackages(object):
         if self.options.version in ['current']:
             self.release = 'debian'
             self.SUITES = [
-                'squeeze-xivo-skaro-rc/main/binary-i386/Packages',
-                'squeeze-xivo-skaro-rc/non-free/binary-i386/Packages',
-                'squeeze/main/binary-i386/Packages',
-                'squeeze/contrib/binary-i386/Packages',
-                'squeeze/non-free/binary-i386/Packages'
+                'xivo-dev/main/binary-i386/Packages',
             ]
         else:
             self.release = 'archive'
+            if self.options.version < '13.25':
+                distribution = 'squeeze-xivo-skaro-%s' % self.options.version
+            else:
+                distribution = 'xivo-%s' % self.options.version
             self.SUITES = [
-                'squeeze-xivo-skaro-%s/main/binary-i386/Packages' % (self.options.version),
-                'squeeze-xivo-skaro-%s/non-free/binary-i386/Packages' % (self.options.version)
+                '%s/main/binary-i386/Packages' % distribution,
+                '%s/non-free/binary-i386/Packages' % distribution
             ]
 
     def _whitelist(self):

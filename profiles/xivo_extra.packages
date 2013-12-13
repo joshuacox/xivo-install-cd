@@ -1,7 +1,4 @@
 pf-xivo
 xivo-fai
-xivo-fai-skaro
-dahdi-linux-modules-2.6.32-5-486
-dahdi-linux-modules-2.6.32-5-686
-dahdi-linux-modules-2.6.32-5-686-bigmem
-pf-server-config
+dahdi-linux-modules-3.2.0-4-486
+dahdi-linux-modules-3.2.0-4-686-pae

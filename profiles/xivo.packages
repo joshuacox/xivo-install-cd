@@ -1,5 +1,5 @@
 postfix
-dhcp3-server
+isc-dhcp-server
 debconf-utils
 hwinfo
 openssh-server
@@ -7,4 +7,5 @@ console-data
 console-tools
 console-setup
 locales-all
-libbind9-60
+libbind9-80
+postgresql-plpython-9.1
