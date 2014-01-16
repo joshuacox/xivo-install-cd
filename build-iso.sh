@@ -23,7 +23,7 @@ rename_iso () {
     md5sum $version.iso > $version.iso.md5sum
 }
 
-version="xivo-$(apt-cache policy pf-xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
+version="xivo-$(apt-cache policy xivo | grep Candidate | grep -oE '[0-9]{2}\.[0-9]+' | head -n1)"
 
 cleanup
 build_iso
