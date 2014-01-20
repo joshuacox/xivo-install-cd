@@ -81,10 +81,15 @@ class GetXivoPackages(object):
             sys.exit(2)
 
     def _define_version(self):
-        if self.options.version in ['current']:
+        if self.options.version == 'current':
             self.release = 'debian'
             self.SUITES = [
                 'xivo-dev/main/binary-i386/Packages',
+            ]
+        elif self.options.version == 'rc':
+            self.release = 'debian'
+            self.SUITES = [
+                'xivo-rc/main/binary-i386/Packages',
             ]
         else:
             self.release = 'archive'
