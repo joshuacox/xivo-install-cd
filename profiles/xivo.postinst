@@ -17,7 +17,7 @@ echo startup=no > /etc/default/xivo
 apt-get update
 apt-get install -y dahdi-linux-modules-${KERN_REL}
 apt-get install -y x11-common
-apt-get install -y -o Dpkg::Options::="--force-confold" xivo
+apt-get install -y -o Dpkg::Options::="--force-confold" xivo xivo-fai
 
 # restore apt configuration
 mv /etc/apt/sources.list.bkp /etc/apt/sources.list
