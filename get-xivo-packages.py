@@ -194,7 +194,7 @@ class GetXivoPackages(object):
                     continue
 
             print " . downloading..."
-            proc = subprocess.Popen(['wget', '-P', self.args[0], target])
+            proc = subprocess.Popen(['wget', '-nv', '-P', self.args[0], target])
             proc.communicate()
 
 
