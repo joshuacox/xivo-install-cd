@@ -15,6 +15,9 @@ build_iso () {
     cd $build_dir
     ./get-xivo-packages.py $packages_dir -V rc
     simple-cdd --dist wheezy -g --profiles-udeb-dist wheezy --conf ./xivo.conf --debian-mirror $mirror
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
 }
 
 rename_iso () {
