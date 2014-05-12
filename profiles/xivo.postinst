@@ -36,7 +36,7 @@ cp /media/cdrom/simple-cdd/issue.xivo /etc/issue
 cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
 # initialize databases
-sed -i '13 i\/usr/bin/xivo-update-db && sed -i "s:^/usr/bin/xivo-update-db.*::" /etc/rc.local' /etc/rc.local
+sed -i '13 i\/usr/bin/xivo-init-db --init && sed -i "s:^/usr/bin/xivo-init-db --init.*::" /etc/rc.local' /etc/rc.local
 
 rm /etc/apt/apt.conf.d/91tmp
 
