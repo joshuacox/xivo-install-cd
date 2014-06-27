@@ -25,7 +25,7 @@ import subprocess
 import os
 from optparse import OptionParser
 
-HTTP_MIRROR = 'http://mirror.xivo.fr'
+HTTP_MIRROR = 'http://mirror.xivo.io'
 
 
 def main():
