@@ -1,4 +1,4 @@
-= Xivo install cd for squeeze xivo skaro =
+= Xivo install cd for squeeze XiVO skaro =
 
 aptitude install simple-cdd syslinux-common netpbm
 
