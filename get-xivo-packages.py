@@ -103,14 +103,9 @@ class GetXivoPackages(object):
             ]
 
     def _whitelist(self):
-        if self.options.version in ['current']:
-            self.include = [
-                'xivo-fai'
-            ]
-        else:
-            self.include = [
-                'xivo-fai-%s' % (self.options.version),
-            ]
+        self.include = [
+            'xivo-dist'
+        ]
         self.exclude = [
             'cracklib',
             'dahdi-linux-source',
