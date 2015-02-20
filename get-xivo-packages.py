@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2010-2014 Avencall
+# Copyright (C) 2010-2015 Avencall
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -99,7 +99,6 @@ class GetXivoPackages(object):
                 distribution = 'xivo-%s' % self.options.version
             self.SUITES = [
                 '%s/main/binary-i386/Packages' % distribution,
-                '%s/non-free/binary-i386/Packages' % distribution
             ]
 
     def _whitelist(self):
