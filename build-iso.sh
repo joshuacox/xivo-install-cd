@@ -13,6 +13,7 @@ cleanup () {
 
 build_iso () {
     cd $build_dir
+    sudo apt-get update
     ./get-xivo-packages.py $packages_dir -V rc
     simple-cdd --dist wheezy -g --profiles-udeb-dist wheezy --conf ./xivo.conf --debian-mirror $mirror
     if [ $? -ne 0 ] ; then

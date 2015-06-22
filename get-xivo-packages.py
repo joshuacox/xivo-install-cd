@@ -24,6 +24,7 @@ import urllib2
 import subprocess
 import os
 from optparse import OptionParser
+import platform
 
 HTTP_MIRROR = 'http://mirror.xivo.io'
 
@@ -48,6 +49,16 @@ class GetXivoPackages(object):
         if self.options.list:
             self._print_list()
         self._download_packages()
+
+    def _get_architecture(self):
+        arch = platform.architecture()[0]
+        if arch == '64bit':
+            architecture = 'amd64'
+        elif arch == '32bit':
+            architecture = 'i386'
+        else:
+            raise ('Unknown architecture!')
+        return architecture
 
     def _parse_arguments(self):
         usage = "Usage: %prog [options] path/to/download"
@@ -81,15 +92,16 @@ class GetXivoPackages(object):
             sys.exit(2)
 
     def _define_version(self):
+        architecture = self._get_architecture()
         if self.options.version == 'current':
             self.release = 'debian'
             self.SUITES = [
-                'xivo-dev/main/binary-i386/Packages',
+                'xivo-dev/main/binary-%s/Packages' % architecture,
             ]
         elif self.options.version == 'rc':
             self.release = 'debian'
             self.SUITES = [
-                'xivo-rc/main/binary-i386/Packages',
+                'xivo-rc/main/binary-%s/Packages' % architecture,
             ]
         else:
             self.release = 'archive'
@@ -98,7 +110,7 @@ class GetXivoPackages(object):
             else:
                 distribution = 'xivo-%s' % self.options.version
             self.SUITES = [
-                '%s/main/binary-i386/Packages' % distribution,
+                '%s/main/binary-%s/Packages' %(distribution, architecture),
             ]
 
     def _whitelist(self):

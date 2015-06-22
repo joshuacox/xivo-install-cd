@@ -1,6 +1,11 @@
-= Xivo install cd for squeeze XiVO skaro =
+= Xivo install cd for wheezy XiVO five =
 
-aptitude install simple-cdd syslinux-common netpbm
+    apt-get install simple-cdd syslinux-common netpbm mtools dosfstools
+
+cat /etc/apt/sources.list.d/xivo-for-cd-build.list
+
+    deb http://mirror.xivo.io/debian/ xivo-dev main
 
 generate CD with following command:
-	$> simple-cdd --dist squeeze -g  --profiles-udeb-dist squeeze --conf ./xivo.conf
+
+    simple-cdd --dist wheezy -g  --profiles-udeb-dist wheezy --conf ./xivo.conf
