@@ -9,3 +9,23 @@ cat /etc/apt/sources.list.d/xivo-for-cd-build.list
 generate CD with following command:
 
     simple-cdd --dist wheezy -g  --profiles-udeb-dist wheezy --conf ./xivo.conf
+
+Docker
+======
+
+To build CD with docker, first build the docker image.
+
+For 32 bit.
+
+    docker build -t xivo-cd32 -f dockerfile/32/Dockerfile .
+
+For 64 bit.
+
+    docker build -t xivo-cd64 -f dockerfile/64/Dockerfile .
+
+Then run the container:
+
+    docker run -it xivo-cd32 bash
+    ./build-iso.sh
+
+The iso result is on directory images.
