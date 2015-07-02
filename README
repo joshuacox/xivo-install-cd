@@ -13,6 +13,12 @@ generate CD with following command:
 Docker
 ======
 
+Min version: 1.7.0
+
+To init the build with docker:
+
+    ./init-docker.sh
+
 To build CD with docker, first build the docker image.
 
 For 32 bit.
@@ -23,9 +29,22 @@ For 64 bit.
 
     docker build -t xivo-cd64 -f dockerfile/64/Dockerfile .
 
-Then run the container:
+Then run the 32 bit container:
 
-    docker run -it xivo-cd32 bash
+    docker run -v /tmp/cd32:/home/builder/xivo-install-cd/tmp -v /tmp/xivo_packages/:/tmp/xivo_packages/ -it xivo-cd32 bash
     ./build-iso.sh
 
-The iso result is on directory images.
+The iso result is on directory images or on /tmp/cd32/images on the host.
+
+Docker compose
+==============
+
+Min version: 1.3.1
+
+Then run:
+
+    docker-compose up
+
+Iso can be found on /tmp/cd$ARCH/images on the host.
+
+ARCH is 32 or 64.
