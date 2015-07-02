@@ -18,7 +18,7 @@ if [ $(id -u) -eq 0 ]; then
         mkdir $PACKAGES
     fi
 
-    chown 777 $CD32 $CD32/images $CD64 $CD64/images $PACKAGES
+    chmod 777 $CD32 $CD32/images $CD64 $CD64/images $PACKAGES
 else
     echo "Please run as root or with sudo!"
 fi
