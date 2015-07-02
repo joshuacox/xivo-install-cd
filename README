@@ -31,7 +31,10 @@ For 64 bit.
 
 Then run the 32 bit container:
 
-    docker run -v /tmp/cd32:/home/builder/xivo-install-cd/tmp -v /tmp/xivo_packages/:/tmp/xivo_packages/ -it xivo-cd32 bash
+    docker run -v /tmp/cd32/images:/home/builder/xivo-install-cd/images \
+               -v /tmp/cd32:/home/builder/xivo-install-cd/tmp \
+               -v /tmp/xivo_packages/:/tmp/xivo_packages/ \
+               -it xivo-cd32 bash
     ./build-iso.sh
 
 The iso result is on directory images or on /tmp/cd32/images on the host.
