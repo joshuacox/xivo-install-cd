@@ -15,7 +15,7 @@ Docker
 
 Min version: 1.7.0
 
-To init the build with docker:
+To init the build with docker-compose:
 
     ./init-docker.sh
 
