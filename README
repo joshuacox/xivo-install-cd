@@ -8,7 +8,7 @@ cat /etc/apt/sources.list.d/xivo-for-cd-build.list
 
 generate CD with following command:
 
-    simple-cdd --dist wheezy -g  --profiles-udeb-dist wheezy --conf ./xivo.conf
+    ./build-iso.sh
 
 Docker
 ======
