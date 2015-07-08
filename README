@@ -1,12 +1,13 @@
-= Xivo install cd for wheezy XiVO five =
+XiVO install CD for Wheezy XiVO five
+====================================
+
+Requirements
+------------
 
     apt-get install simple-cdd syslinux-common netpbm mtools dosfstools
+    echo deb http://mirror.xivo.io/debian/ xivo-dev main > /etc/apt/sources.list.d/xivo-for-cd-build.list
 
-cat /etc/apt/sources.list.d/xivo-for-cd-build.list
-
-    deb http://mirror.xivo.io/debian/ xivo-dev main
-
-generate CD with following command:
+Generate CD with following command:
 
     ./build-iso.sh
 
@@ -15,42 +16,47 @@ Docker
 
 Min version: 1.7.0
 
-To init the build with docker:
+There are 3 steps to build the ISO:
+
+* create a bunch of directories with the right permissions on the host
+* build the builder image
+* run the builder image to create the ISO
+
+32-bit
+------
 
     ./init-docker.sh
-
-To build CD with docker, first build the docker image.
-
-For 32 bit.
-
     docker build -t xivo-cd32 -f dockerfile/32/Dockerfile .
-
-For 64 bit.
-
-    docker build -t xivo-cd64 -f dockerfile/64/Dockerfile .
-
-Then run the 32 bit container:
-
     docker run -v /tmp/cd32/images:/home/builder/xivo-install-cd/images \
                -v /tmp/cd32:/home/builder/xivo-install-cd/tmp \
                -v /tmp/xivo_packages/:/tmp/xivo_packages/ \
                xivo-cd32
 
-The iso result is on directory images or on /tmp/cd32/images on the host.
+64-bit
+------
+
+    ./init-docker.sh
+    docker build -t xivo-cd64 -f dockerfile/64/Dockerfile .
+    docker run -v /tmp/cd64/images:/home/builder/xivo-install-cd/images \
+               -v /tmp/cd64:/home/builder/xivo-install-cd/tmp \
+               -v /tmp/xivo_packages/:/tmp/xivo_packages/ \
+               xivo-cd64
+
+The resulting ISO is in:
+
+    /home/builder/xivo-install-cd/images (container)
+    /tmp/cd32/images (host for 32-bit)
+    /tmp/cd64/images (host for 64-bit)
 
 Docker compose
 ==============
 
 Min version: 1.3.1
 
-To init the build with docker:
-
     ./init-docker.sh
-
-Then run:
-
     docker-compose up -d
 
-Iso can be found on /tmp/cd$ARCH/images on the host.
+The resulting ISO is in:
 
-ARCH is 32 or 64.
+    /tmp/cd32/images (host for 32-bit)
+    /tmp/cd64/images (host for 64-bit)
