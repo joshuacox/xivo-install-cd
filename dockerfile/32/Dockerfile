@@ -1,4 +1,4 @@
-from tubia/debian:wheezy
+FROM tubia/debian:wheezy
 
 MAINTAINER Sylvain Boily "sboily@avencall.com"
 

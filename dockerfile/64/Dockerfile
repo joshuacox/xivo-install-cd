@@ -1,4 +1,4 @@
-from debian:wheezy
+FROM debian:wheezy
 
 MAINTAINER Sylvain Boily "sboily@avencall.com"
 
