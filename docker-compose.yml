@@ -5,6 +5,7 @@ cd32:
     - /tmp/cd32/:/home/builder/xivo-install-cd/tmp/
     - /tmp/cd32/images:/home/builder/xivo-install-cd/images
     - /tmp/xivo_packages/:/tmp/xivo_packages/
+    - .:/home/builder/xivo-install-cd
 cd64:
   build: .
   dockerfile: dockerfile/64/Dockerfile
@@ -12,3 +13,4 @@ cd64:
     - /tmp/cd64/:/home/builder/xivo-install-cd/tmp/
     - /tmp/cd64/images:/home/builder/xivo-install-cd/images
     - /tmp/xivo_packages/:/tmp/xivo_packages/
+    - .:/home/builder/xivo-install-cd
