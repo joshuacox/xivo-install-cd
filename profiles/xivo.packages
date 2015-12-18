@@ -3,9 +3,6 @@ isc-dhcp-server
 debconf-utils
 hwinfo
 openssh-server
-console-data
-console-tools
-console-setup
 locales-all
-libbind9-80
-postgresql-plpython-9.1
+postgresql-plpython-9.4
+dnsutils

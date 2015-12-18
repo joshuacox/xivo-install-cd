@@ -3,7 +3,7 @@
 d-i	passwd/make-user	boolean	false
 
 # apt : selected suite
-d-i	mirror/suite	select	squeeze
+d-i	mirror/suite	select	jessie
 
 # popcon participation
 popularity-contest popularity-contest/participate boolean true

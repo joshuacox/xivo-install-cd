@@ -1,14 +1,15 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 MAINTAINER Sylvain Boily "sboily@avencall.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN echo 'deb http://mirror.xivo.io/debian/ xivo-dev main' > /etc/apt/sources.list.d/xivo.list
-RUN echo 'deb http://ftp.ca.debian.org/debian/ wheezy-backports main' > /etc/apt/sources.list.d/wheezy-backports.list
 RUN apt-key adv --recv-keys --keyserver pgp.mit.edu 0x2D0C2DE0DFB0B268
 RUN apt-get -yqq update
 RUN apt-get -yqq install simple-cdd \
+                    "debian-cd=3.1.17" \
+                    isolinux \
                     syslinux-common \
                     netpbm \
                     sudo \
