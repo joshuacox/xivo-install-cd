@@ -1,9 +1,11 @@
-# keep grub or debian-installer may not work properly.
+# keep grub-pc and grub-efi or debian-installer may not work properly on
+# i386/amd64.
 grub-pc
+grub-efi
 
 popularity-contest
-localization-config
 console-tools
+console-setup
 
 usbutils
 acpi
@@ -15,12 +17,10 @@ lvm2
 mdadm
 cryptsetup
 
-# to support JFS and XFS filesystems
+# to support reiserfs, JFS and XFS filesystems
+reiserfsprogs
 jfsutils
 xfsprogs
-
-# type-handling tiny package needed for xorg on most architectures
-type-handling
 
 # debian-cd uses debootstrap from the mirror
 debootstrap
@@ -31,3 +31,5 @@ busybox
 # newer debian-cd (0.3.5+) requires syslinux-common or syslinux in the mirror
 syslinux-common
 syslinux
+# newer debian-cd (3.1.5+) requires isolinux
+isolinux
