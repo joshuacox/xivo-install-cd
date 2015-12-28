@@ -12,7 +12,8 @@ RUN apt-get -yqq install simple-cdd \
                     netpbm \
                     sudo \
                     mtools \
-                    dosfstools
+                    dosfstools \
+                    debian-archive-keyring
 
 RUN groupadd builder
 RUN useradd -r -g builder -G sudo -s /bin/bash -u 1000 builder

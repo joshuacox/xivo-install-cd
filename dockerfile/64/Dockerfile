@@ -8,13 +8,12 @@ RUN echo 'deb http://mirror.xivo.io/debian/ xivo-dev main' > /etc/apt/sources.li
 RUN apt-key adv --recv-keys --keyserver pgp.mit.edu 0x2D0C2DE0DFB0B268
 RUN apt-get -yqq update
 RUN apt-get -yqq install simple-cdd \
-                    "debian-cd=3.1.17" \
-                    isolinux \
                     syslinux-common \
                     netpbm \
                     sudo \
                     mtools \
-                    dosfstools
+                    dosfstools \
+                    debian-archive-keyring
 
 RUN groupadd builder
 RUN useradd -r -g builder -G sudo -s /bin/bash -u 1000 builder
