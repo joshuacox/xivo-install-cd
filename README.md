@@ -1,4 +1,4 @@
-XiVO install CD for Wheezy XiVO five
+XiVO install CD for Jessie XiVO five
 ====================================
 
 Requirements
