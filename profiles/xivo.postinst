@@ -12,7 +12,6 @@ apt-key add /media/cdrom/simple-cdd/xivo_current.key
 echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/91tmp;
 echo -e "\033[91m* Installing xivo packages\033[0m"
 export KERN_REL=$(ls /lib/modules/ | sort | head -n 1)
-echo startup=no > /etc/default/xivo
 
 apt-get update
 apt-get install -y dahdi-linux-modules-${KERN_REL}
