@@ -4,7 +4,6 @@
 cp /etc/apt/sources.list /etc/apt/sources.list.bkp
 echo -e "\n" |apt-cdrom add
 
-
 # add xivo keys
 apt-key add /media/cdrom/simple-cdd/xivo_current.key
 
@@ -25,14 +24,6 @@ apt-get update
 # set machine hostname
 echo "xivo" > /etc/hostname
 sed -i '2 a\127.0.0.1\txivo' /etc/hosts
-
-# console logo
-dpkg-divert --add /etc/issue.net
-
-
-mount /media/cdrom
-cp /media/cdrom/simple-cdd/issue.xivo /etc/issue
-cp /media/cdrom/simple-cdd/issue.xivo /etc/issue.net
 
 # initialize databases
 sed -i '13 i\/usr/bin/xivo-init-db --init && sed -i "/xivo-init-db/d" /etc/rc.local' /etc/rc.local
