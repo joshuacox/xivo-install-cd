@@ -29,8 +29,6 @@ postfix postfix/mailbox_limit   string  0
 dhcp3-server	dhcp3-server/interfaces	string	
 dhcp3-server    dhcp3-server/new_auth_behavior  note
 
-ca-certificates ca-certificates/trust_new_crts  select  no
-
 # ifplugd: listen interfaces and start options
 ifplugd ifplugd/interfaces		string	
 ifplugd ifplugd/hotplug_interfaces	string	
