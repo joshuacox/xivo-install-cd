@@ -25,10 +25,6 @@ postfix postfix/destinations    string  xivo-clients.proformatique.com, localhos
 postfix postfix/nqmgr_upgrade_warning   boolean
 postfix postfix/mailbox_limit   string  0
 
-# dhcp server: listen on all interfaces
-dhcp3-server	dhcp3-server/interfaces	string	
-dhcp3-server    dhcp3-server/new_auth_behavior  note
-
 # ifplugd: listen interfaces and start options
 ifplugd ifplugd/interfaces		string	
 ifplugd ifplugd/hotplug_interfaces	string	
