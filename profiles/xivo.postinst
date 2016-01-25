@@ -27,6 +27,8 @@ sed -i '2 a\127.0.0.1\txivo' /etc/hosts
 
 # initialize databases
 sed -i '13 i\/usr/bin/xivo-init-db --init && sed -i "/xivo-init-db/d" /etc/rc.local' /etc/rc.local
+# Sync db with key file
+sed -i '14 i\/usr/bin/xivo-update-keys && sed -i "/xivo-update-keys/d" /etc/rc.local' /etc/rc.local
 
 rm /etc/apt/apt.conf.d/91tmp
 
