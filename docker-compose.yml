@@ -1,6 +1,7 @@
 cd32:
   build: .
   dockerfile: dockerfile/32/Dockerfile
+  privileged: true
   volumes:
     - /tmp/cd32/:/home/builder/xivo-install-cd/tmp/
     - /tmp/cd32/images:/home/builder/xivo-install-cd/images
