@@ -25,9 +25,16 @@ apt-get update
 echo "xivo" > /etc/hostname
 sed -i '2 a\127.0.0.1\txivo' /etc/hosts
 
+cat > /etc/rc.xivo << EOF
+#!/bin/sh
+/usr/sbin/dpkg-reconfigure xivo-manage-db
+/usr/sbin/dpkg-reconfigure xivo-dird
+/bin/systemctl start xivo-confd.service
+EOF
+chmod +x /etc/rc.xivo
+
 # reconfigure xivo-manage-db when postgres is running
-sed -i '13 i\/usr/sbin/dpkg-reconfigure xivo-manage-db && sed -i "/dpkg-reconfigure/d" /etc/rc.local' /etc/rc.local
-sed -i '14 i\/bin/systemctl start xivo-confd.service && sed -i "/systemctl start xivo-confd.service/d" /etc/rc.local' /etc/rc.local
+sed -i '13 i\/etc/rc.xivo && rm -f /etc/rc.xivo && sed -i "/rc.xivo/d" /etc/rc.local' /etc/rc.local
 
 rm /etc/apt/apt.conf.d/91tmp
 
