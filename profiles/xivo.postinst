@@ -29,7 +29,9 @@ cat > /etc/rc.xivo << EOF
 #!/bin/sh
 /usr/sbin/dpkg-reconfigure xivo-manage-db
 /usr/sbin/dpkg-reconfigure xivo-dird
+/bin/systemctl start xivo-auth.service
 /bin/systemctl start xivo-confd.service
+/bin/systemctl start xivo-dird.service
 EOF
 chmod +x /etc/rc.xivo
 
