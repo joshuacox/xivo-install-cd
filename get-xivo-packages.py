@@ -18,13 +18,14 @@
 
 from __future__ import with_statement
 
-import sys
 import hashlib
-import urllib2
-import subprocess
 import os
-from optparse import OptionParser
 import platform
+import subprocess
+import sys
+import urllib2
+
+from optparse import OptionParser
 
 HTTP_MIRROR = 'http://mirror.wazo.community'
 
@@ -111,7 +112,7 @@ class GetWazoPackages(object):
             else:
                 distribution = 'wazo-%s' % self.options.version
             self.SUITES = [
-                '%s/main/binary-%s/Packages' %(distribution, architecture),
+                '%s/main/binary-%s/Packages' % (distribution, architecture),
             ]
 
     def _whitelist(self):
@@ -152,7 +153,7 @@ class GetWazoPackages(object):
                     self.skip = True
                     package = line.split(' ')[1][:-1].strip()
 
-                    if not package in self.include and \
+                    if package not in self.include and \
                             (package.endswith('-dev') or
                              len(filter(lambda x: package.startswith(x), self.exclude)) > 0):
                         continue
