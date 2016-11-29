@@ -5,7 +5,7 @@ Requirements
 ------------
 
     apt-get install simple-cdd syslinux-common netpbm mtools dosfstools
-    echo deb http://mirror.xivo.io/debian/ xivo-dev main > /etc/apt/sources.list.d/xivo-for-cd-build.list
+    echo deb http://mirror.wazo.community/debian/ wazo-dev main > /etc/apt/sources.list.d/wazo-for-cd-build.list
 
 Generate CD with following command:
 

@@ -26,15 +26,14 @@ import os
 from optparse import OptionParser
 import platform
 
-HTTP_MIRROR = 'http://mirror.xivo.io'
+HTTP_MIRROR = 'http://mirror.wazo.community'
 
 
 def main():
-    gxp = GetXivoPackages()
-    gxp.list_and_download_packages()
+    GetWazoPackages().list_and_download_packages()
 
 
-class GetXivoPackages(object):
+class GetWazoPackages(object):
 
     def __init__(self):
         self._parse_arguments()
@@ -81,7 +80,7 @@ class GetXivoPackages(object):
                                action='store',
                                type='string',
                                default='current',
-                               help="specify the XiVO version to build. Default is 'current'")
+                               help="specify the Wazo version to build. Default is 'current'")
 
         (self.options, self.args) = self.parser.parse_args()
         self._validate_args()
@@ -96,19 +95,21 @@ class GetXivoPackages(object):
         if self.options.version == 'current':
             self.release = 'debian'
             self.SUITES = [
-                'xivo-dev/main/binary-%s/Packages' % architecture,
+                'wazo-dev/main/binary-%s/Packages' % architecture,
             ]
         elif self.options.version == 'rc':
             self.release = 'debian'
             self.SUITES = [
-                'xivo-rc/main/binary-%s/Packages' % architecture,
+                'wazo-rc/main/binary-%s/Packages' % architecture,
             ]
         else:
             self.release = 'archive'
             if self.options.version < '13.25':
                 distribution = 'squeeze-xivo-skaro-%s' % self.options.version
-            else:
+            elif self.options.version < '16.16':
                 distribution = 'xivo-%s' % self.options.version
+            else:
+                distribution = 'wazo-%s' % self.options.version
             self.SUITES = [
                 '%s/main/binary-%s/Packages' %(distribution, architecture),
             ]
