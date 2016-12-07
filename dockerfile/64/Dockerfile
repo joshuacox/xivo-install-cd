@@ -4,7 +4,7 @@ MAINTAINER Sylvain Boily "sboily@avencall.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN echo 'deb http://mirror.wazo.community/debian/ xivo-dev main' > /etc/apt/sources.list.d/wazo.list
+RUN echo 'deb http://mirror.wazo.community/debian/ wazo-dev main' > /etc/apt/sources.list.d/wazo.list
 RUN apt-key adv --recv-keys --keyserver pgp.mit.edu 0x2D0C2DE0DFB0B268
 RUN apt-get -yqq update
 RUN apt-get -yqq install simple-cdd \
