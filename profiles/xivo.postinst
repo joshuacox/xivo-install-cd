@@ -5,7 +5,7 @@ cp /etc/apt/sources.list /etc/apt/sources.list.bkp
 echo -e "\n" |apt-cdrom add
 
 # add xivo keys
-apt-key add /media/cdrom/simple-cdd/xivo_current.key
+apt-key add /media/cdrom/simple-cdd/wazo_current.key
 
 # install xivo packages
 echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/91tmp;
