@@ -4,12 +4,12 @@
 cp /etc/apt/sources.list /etc/apt/sources.list.bkp
 echo -e "\n" |apt-cdrom add
 
-# add xivo keys
+# add wazo keys
 apt-key add /media/cdrom/simple-cdd/wazo_current.key
 
-# install xivo packages
+# install wazo packages
 echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/91tmp;
-echo -e "\033[91m* Installing xivo packages\033[0m"
+echo -e "\033[91m* Installing Wazo packages\033[0m"
 export KERN_REL=$(ls /lib/modules/ | sort | head -n 1)
 
 apt-get update
@@ -22,8 +22,8 @@ mv /etc/apt/sources.list.bkp /etc/apt/sources.list
 apt-get update
 
 # set machine hostname
-echo "xivo" > /etc/hostname
-sed -i '2 a\127.0.0.1\txivo' /etc/hosts
+echo "wazo" > /etc/hostname
+sed -i '2 a\127.0.0.1\twazo' /etc/hosts
 
 cat > /etc/rc.xivo << EOF
 #!/bin/sh
