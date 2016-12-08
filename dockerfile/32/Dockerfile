@@ -1,6 +1,6 @@
 FROM 32bit/debian:jessie
 
-MAINTAINER Sylvain Boily "sboily@avencall.com"
+MAINTAINER  Wazo Maintainers <dev.wazo@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
