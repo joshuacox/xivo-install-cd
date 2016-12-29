@@ -1,5 +1,5 @@
-XiVO install CD for Jessie XiVO five
-====================================
+Wazo install CD
+===============
 
 Requirements
 ------------
